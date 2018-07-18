@@ -1,6 +1,7 @@
 
-import * as pubsub from 'pubsub-js';
+import * as PubsubBroker from '../pubsub/broker';
+import * as MemberTypes from '../types/member-types';
 
-pubsub.subscribe('register', (payload) => {
-  
+PubsubBroker.subscribe('register', async (payload: MemberTypes.ReqMemberRegister) => {
+  return null;
 });
