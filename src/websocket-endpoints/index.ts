@@ -1,5 +1,7 @@
 
+import logger from '../loggers';
+
 export async function init() {
-  console.log('websocket server initialized');
+  logger.info('websocket endpoints initialized');
   return;
 }
