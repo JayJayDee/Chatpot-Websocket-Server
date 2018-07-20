@@ -1,4 +1,4 @@
 
-export interface PubsubBrokderDriver {
-  
+export interface PubsubBrokerDriver {
+   
 }

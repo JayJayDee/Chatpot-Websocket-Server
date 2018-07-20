@@ -1,10 +1,10 @@
 
-import * as PubsubBroker from '../pubsub';
+import * as Pubsub from '../pubsub';
 import * as MemberTypes from '../types/member-types';
 
 import logger from '../loggers';
 
-PubsubBroker.subscribe('register', async (payload: MemberTypes.ReqMemberRegister) => {
+Pubsub.Broker.subscribe('register', async (payload: MemberTypes.ReqMemberRegister) => {
   logger.info('test');
   return null;
 });

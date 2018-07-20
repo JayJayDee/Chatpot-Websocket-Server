@@ -2,7 +2,7 @@
 import * as Router from 'koa-router';
 import { IRouterContext } from 'koa-router';
 
-import * as PubsubBroker from '../pubsub/broker';
+import * as Pubsub from '../pubsub';
 import * as MemberTypes from '../types/member-types';
 
 export const router = new Router();
@@ -16,7 +16,7 @@ router.post('/subscribe/topic/:topic_id', async (ctx: IRouterContext, next: () =
     topicId: topicId
   };
 
-  let resp = await PubsubBroker.publish('subscribe', payload);
+  let resp = await Pubsub.Broker.publish('subscribe', payload);
   ctx.body = resp;
   ctx.status = 200;
 });

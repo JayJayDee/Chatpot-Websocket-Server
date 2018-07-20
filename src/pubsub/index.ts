@@ -1,24 +1,30 @@
 
-import * as _ from 'lodash';
 import * as Interfaces from './interfaces';
 
-const topics: { [key: string]: Array<(payload: any) => Promise<any>> } = {};
+import InMemoryBrokerDriver from './in-memory-driver';
+import RedisBrokerDriver from './redis-driver';
 
-export let driver: Interfaces.PubsubBrokderDriver = null;
+export { InMemoryBrokerDriver, RedisBrokerDriver }
 
-export async function publish(topicId: string, payload: any): Promise<Array<any>> {
-  if (!topics[topicId]) {
-    return [];
-  }
-  let promises: Array<Promise<any>> = _.map(topics[topicId], (func: (payload: any) => Promise<any>) => {
-    return func(payload);
-  });
-  return await Promise.all(promises);
+export interface PubsubBrokerDriver {
+  publish(topicId: string, payload: any): Promise<Array<any>>;
+  subscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
 }
 
-export function subscribe(topicId: string, callback: (payload: any) => Promise<any>) {
-  if (!topics[topicId]) {
-    topics[topicId] = [];
-  }
-  topics[topicId].push(callback);
+interface PubsubBroker {
+  driver: Interfaces.PubsubBrokerDriver;
+  publish(topicId: string, payload: any): Promise<Array<any>>;
+  subscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
 }
+
+export const Broker: PubsubBroker = {
+  driver: new InMemoryBrokerDriver(),
+  
+  publish: async function (topicId: string, payload: any) {
+    return await this.driver.publish(topicId, payload);
+  },
+
+  subscribe: async function (topicId: string, callback: (payload: any) => Promise<any>) {
+    return await this.driver.subscribe(topicId, callback);
+  }
+};
