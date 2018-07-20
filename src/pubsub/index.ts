@@ -1,7 +1,10 @@
 
 import * as _ from 'lodash';
+import * as Interfaces from './interfaces';
 
 const topics: { [key: string]: Array<(payload: any) => Promise<any>> } = {};
+
+export let driver: Interfaces.PubsubBrokderDriver = null;
 
 export async function publish(topicId: string, payload: any): Promise<Array<any>> {
   if (!topics[topicId]) {

@@ -1,6 +1,6 @@
 
 import * as Interfaces from './interfaces';
 
-export class RedisBrokderDriver implements Interfaces.PubsubBrokderDriver {
+export default class RedisBrokderDriver implements Interfaces.PubsubBrokderDriver {
   
 }

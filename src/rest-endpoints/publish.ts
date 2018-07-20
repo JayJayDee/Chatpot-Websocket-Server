@@ -2,7 +2,7 @@
 import * as Router from 'koa-router';
 import { IRouterContext } from 'koa-router';
 
-import * as PubsubBroker from '../pubsub/broker';
+import * as PubsubBroker from '../pubsub';
 import * as MemberTypes from '../types/member-types';
 
 const router = new Router();
