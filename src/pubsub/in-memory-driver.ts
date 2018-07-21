@@ -10,7 +10,7 @@ export default class InMemoryBrokderDriver implements PubsubBrokerDriver {
     this.eventMap = {};
   }
 
-  public async publish(topicId, payload: any): Promise<Array<any>> {
+  public async publish(topicId: string, payload: any): Promise<Array<any>> {
     if (!this.eventMap[topicId]) {
       return [];
     }
@@ -26,5 +26,9 @@ export default class InMemoryBrokderDriver implements PubsubBrokerDriver {
     }
     this.eventMap[topicId].push(callback);
     return {};
+  }
+
+  public async unsubscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any> {
+    return null;
   }
 }

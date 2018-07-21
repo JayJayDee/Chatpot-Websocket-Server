@@ -9,11 +9,12 @@ export { InMemoryBrokerDriver, RedisBrokerDriver }
 export interface PubsubBrokerDriver {
   publish(topicId: string, payload: any): Promise<Array<any>>;
   subscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
+  unsubscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
 }
 
 interface PubsubBroker {
   driver: Interfaces.PubsubBrokerDriver;
-  
+
   publish(topicId: string, payload: any): Promise<Array<any>>;
   subscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
 

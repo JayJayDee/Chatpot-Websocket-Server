@@ -12,4 +12,8 @@ export default class RedisBrokderDriver implements PubsubBrokerDriver {
   public async subscribe(topicId, callback: (payload: any) => Promise<any>): Promise<any> {
     return null;
   }
+
+  public async unsubscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any> {
+    return null;
+  }
 }
