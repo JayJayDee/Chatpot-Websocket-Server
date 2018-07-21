@@ -29,6 +29,10 @@ export default class InMemoryBrokderDriver implements PubsubBrokerDriver {
   }
 
   public async unsubscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any> {
+    if (!this.eventMap[topicId]) {
+      return null;
+    }
+    
     return null;
   }
 }

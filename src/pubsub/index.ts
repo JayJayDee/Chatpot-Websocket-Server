@@ -3,6 +3,7 @@ import * as Interfaces from './interfaces';
 
 import InMemoryBrokerDriver from './in-memory-driver';
 import RedisBrokerDriver from './redis-driver';
+import { resolve } from 'path';
 
 export { InMemoryBrokerDriver, RedisBrokerDriver }
 
@@ -17,8 +18,9 @@ interface PubsubBroker {
 
   publish(topicId: string, payload: any): Promise<Array<any>>;
   subscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
+  unsubscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
 
-  waitUntilPublished(topicId: string): Promise<Array<any> | any>;
+  subscribeOneTime(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
 }
 
 interface SubscriptionOptions {
@@ -28,15 +30,31 @@ interface SubscriptionOptions {
 export const Broker: PubsubBroker = {
   driver: new InMemoryBrokerDriver(),
   
-  publish: async function (topicId: string, payload: any) {
+  publish: async function(topicId: string, payload: any) {
     return await this.driver.publish(topicId, payload);
   },
 
-  subscribe: async function (topicId: string, callback: (payload: any) => Promise<any>) {
+  subscribe: async function(topicId: string, callback: (payload: any) => Promise<any>) {
     return await this.driver.subscribe(topicId, callback);
   },
 
-  waitUntilPublished: async function (topicId: string): Promise<Array<any> | any> {
+  unsubscribe: async function(topicId: string, callback: (payload: any) => Promise<any>) {
     return null;
-  }
+  },
+
+  //TODO: to be fixed to subscribe funtion to async function.
+  subscribeOneTime: function(topicId: string, callback: (payload: any) => Promise<any>) {
+    return new Promise((resolve: Function, reject: Function) => {
+      let subscribeCallback = async (payload) => {
+        Broker.unsubscribe(topicId, this)
+        .then((resp) => {
+          return resolve(payload);
+        })
+        .catch((err) => {
+          return reject(err);
+        });
+      };
+      Broker.subscribe(topicId, subscribeCallback);
+    });
+  },
 };
