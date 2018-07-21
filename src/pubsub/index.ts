@@ -13,8 +13,15 @@ export interface PubsubBrokerDriver {
 
 interface PubsubBroker {
   driver: Interfaces.PubsubBrokerDriver;
+  
   publish(topicId: string, payload: any): Promise<Array<any>>;
   subscribe(topicId: string, callback: (payload: any) => Promise<any>): Promise<any>;
+
+  waitUntilPublished(topicId: string): Promise<Array<any> | any>;
+}
+
+interface SubscriptionOptions {
+  useObjectWithSingleResponse?: boolean;
 }
 
 export const Broker: PubsubBroker = {
@@ -26,5 +33,9 @@ export const Broker: PubsubBroker = {
 
   subscribe: async function (topicId: string, callback: (payload: any) => Promise<any>) {
     return await this.driver.subscribe(topicId, callback);
+  },
+
+  waitUntilPublished: async function (topicId: string): Promise<Array<any> | any> {
+    return null;
   }
 };

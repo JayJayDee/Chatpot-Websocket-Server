@@ -2,6 +2,8 @@
 import { PubsubBrokerDriver } from './index';
 
 export default class RedisBrokderDriver implements PubsubBrokerDriver {
+
+  //TODO: to be implemented
   
   public async publish(topicId, payload: any): Promise<Array<any>> {
     return null;
